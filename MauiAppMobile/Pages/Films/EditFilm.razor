@@ -1,0 +1,57 @@
+﻿@page "/films/editfilm/{Id:int}"
+
+@inject IFilmService FilmService
+@inject NavigationManager NavigationManager
+
+<h2 class="white-text"><b>Film details</b></h2>
+<hr class="white-horizontal-line" />
+
+@if (film == null)
+{
+    <p><em>@message</em></p>
+}
+else
+{
+    <FilmForm film="film" OnValidSubmit="HandleValidSubmit"></FilmForm>
+    <div style="height: 5px"/>
+    <AuthorizeView Roles="Admin">
+        <button class="btn btn-danger" @onclick=HandleDelete>Delete</button>
+    </AuthorizeView>
+    <br/><br/>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Film film;
+    private string message = "Loading film...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await FilmService.GetFilmByIdAsync(Id);
+        if (response.Success)
+            film = response.Data;
+        else
+            message = response.Message;
+    }
+
+    async Task HandleValidSubmit()
+    {
+        var response = await FilmService.UpdateFilmAsync(film);
+        if (response.Success)
+            NavigationManager.NavigateTo("/films/filmsList");
+        else
+            message = response.Message;
+    }
+
+    async Task HandleDelete()
+    {
+        var response = await FilmService.DeleteFilmAsync(Id);
+        if (response.Success)
+            NavigationManager.NavigateTo("/films/filmsList");
+        else
+            message = response.Message;
+    }
+}

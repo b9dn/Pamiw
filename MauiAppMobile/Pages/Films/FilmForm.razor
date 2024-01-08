@@ -1,0 +1,87 @@
+﻿@using Microsoft.CognitiveServices.Speech;
+
+@inject ISpeechService SpeechService;
+
+<EditForm Model="film" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <InputText id="title" @bind-Value="film.Title" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="barcode">Barcode:</label>
+        <InputText id="barcode" @bind-Value="film.Barcode" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <InputNumber id="price" @bind-Value="film.Price" class="form-control"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label for="releaseDate">Release Date:</label>
+        <InputDate id="releaseDate" @bind-Value="film.ReleaseDate" class="form-control"></InputDate>
+    </div>
+    <div class="form-group" style="text-align: right">
+        <label for="description">Description:</label>
+        <InputTextArea id="description" @bind-Value="film.Description" class="form-control"></InputTextArea>
+        <AuthorizeView Roles="Admin" Context="FilmForm">
+            <div style="height: 5px" />
+            <button class="btn btn-primary" type="button" @onclick="OnRecognitionButtonClicked">Speech</button>
+        </AuthorizeView>
+    </div>
+    <div style="height: 7px"/>
+    <AuthorizeView Roles="Admin" Context="FilmForm">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </AuthorizeView>
+</EditForm>
+
+
+@code {
+
+    [Parameter]
+    public Film film { get; set; }
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    private async Task<PermissionStatus> CheckAndRequestMicrophonePermission() {
+        PermissionStatus status = await Permissions.CheckStatusAsync<Permissions.Microphone>();
+        if (status == PermissionStatus.Granted) {
+            return status;
+        }
+        if (Permissions.ShouldShowRationale<Permissions.Microphone>()) {
+            // Prompt the user with additional information as to why the permission is needed
+        }
+        status = await Permissions.RequestAsync<Permissions.Microphone>();
+        return status;
+    }
+
+    private async void OnRecognitionButtonClicked() {
+        await CheckAndRequestMicrophonePermission();
+        try {
+            var result = await SpeechService.RecognizeAsync();
+
+            if (result.Reason == ResultReason.RecognizedSpeech) {
+                film.Description = result.Text;
+                StateHasChanged();
+            }
+            else if (result.Reason == ResultReason.NoMatch) {
+                await App.Current.MainPage.DisplayAlert("Speech result", "Speech could not be recognized", "Ok");
+            }
+            else if (result.Reason == ResultReason.Canceled) {
+                var cancellation = CancellationDetails.FromResult(result);
+
+                var s = $"Reason={cancellation.Reason}\n";
+                if (cancellation.Reason == CancellationReason.Error) {
+                    s += $"CANCELED: ErrorCode={cancellation.ErrorCode}\n";
+                    s += $"CANCELED: ErrorDetails={cancellation.ErrorDetails}\n";
+                    s += $"CANCELED: Do you have actual subscription info?";
+                }
+                await App.Current.MainPage.DisplayAlert("Speech result", $"Error with speech service\nDetails:\n{s}", "Ok");
+            }
+
+        } catch (Exception ex) {
+            await App.Current.MainPage.DisplayAlert("Exception", ex.ToString(), "Ok");
+        }
+    }
+}

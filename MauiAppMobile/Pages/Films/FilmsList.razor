@@ -1,0 +1,117 @@
+﻿@page "/films/filmsList"
+
+@attribute [Authorize]
+@inject IFilmService FilmService
+@inject NavigationManager NavigationManager
+
+<h2 class="white-text"><b>Full list of films</b></h2>
+<hr class="white-horizontal-line" />
+
+<p>
+    <AuthorizeView Roles="Admin">
+        <a href="films/createfilm">Create new film</a>
+    </AuthorizeView>
+</p>
+
+@if (films == null) {
+    <p><em>@message</em></p>
+}
+
+else {
+    <div>
+        <InputText @bind-Value=searchTerm></InputText>
+        <button class="btn btn-primary" @onclick=Search>Search</button>
+    </div>
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Barcode</th>
+                <th>Price</th>
+                <th>Release Date</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var film in films) {
+                <tr>
+                    <td>@film.Id</td>
+                    <td>@film.Title</td>
+                    <td>@film.Barcode</td>
+                    <td>@film.Price</td>
+                    <td>@film.ReleaseDate.ToShortDateString()</td>
+                    <AuthorizeView Roles="Admin">
+                        <td>
+                            <button class="btn btn-primary" @onclick="()=> GoToEdit(film.Id)">Edit</button>
+                        </td>
+                    </AuthorizeView>
+                    <AuthorizeView Roles="Customer">
+                        <td>
+                            <button class="btn btn-primary" @onclick="()=> GoToEdit(film.Id)">Details</button>
+                        </td>
+                    </AuthorizeView>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" disabled="@(currentPage==1)" @onclick="PreviousPage">Previous</button>
+    <span>@currentPage</span>
+    <button class="btn btn-primary" @onclick="NextPage">Next</button>
+    <br />
+    <br />
+}
+
+
+
+@code {
+    private List<Film> films;
+    private string message = "Loading films...";
+
+    private int currentPage = 1;
+    private const int pageSize = 10;
+
+    private string searchTerm = "";
+
+    protected override async Task OnInitializedAsync() {
+        await LoadFilms();
+    }
+
+    private async Task LoadFilms() {
+        var response = await FilmService.SearchFilmsAsync(searchTerm, currentPage, pageSize);
+        if (response.Success) {
+            films = response.Data;
+            //.Skip(pageSize * (currentPage - 1))
+            //.Take(pageSize)
+            //.ToList();
+        }
+        else {
+            message = response.Message;
+        }
+    }
+
+
+    void GoToEdit(int id) {
+        NavigationManager.NavigateTo($"/films/editfilm/{id}");
+    }
+
+    private async Task PreviousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            await LoadFilms();
+        }
+    }
+    private async Task NextPage() {
+        currentPage++;
+        await LoadFilms();
+    }
+
+    private async Task Search() {
+        currentPage = 1;
+        await LoadFilms();
+    }
+}

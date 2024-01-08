@@ -1,0 +1,77 @@
+﻿@using Blazored.LocalStorage;
+@inherits LayoutComponentBase
+
+@inject ILocalStorageService LocalStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">MauiAppMobile</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="films/filmsList">
+                <span class="oi oi-camera-slr" aria-hidden="true"></span> Films
+            </NavLink>
+        </div>
+        <li class="dropdown-divider"></li>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="settings">
+                <span class="oi oi-wrench" aria-hidden="true"></span> Settings
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <AuthorizeView>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="login">
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Login
+                    </NavLink>
+                </NotAuthorized>
+                <Authorized>
+                    <a class="nav-link" @onclick="Logout" style="cursor: pointer">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                    </a>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task Logout() {
+        await LocalStorageService.RemoveItemAsync("authToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

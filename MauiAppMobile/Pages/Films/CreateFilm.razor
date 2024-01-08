@@ -1,0 +1,33 @@
+﻿@page "/films/createfilm"
+
+@attribute [Authorize(Roles = "Admin")]
+@inject IFilmService FilmService
+@inject NavigationManager NavigationManager
+
+<h2 class="white-text"><b>Create film</b></h2>
+<hr class="white-horizontal-line" />
+
+@if (message != null)
+{
+    <p><em>@message</em></p>
+}
+else
+{
+    <FilmForm film="film" OnValidSubmit="HandleValidSubmit"></FilmForm>
+}
+
+@code {
+    private Film film = new Film();
+    private string? message = null;
+
+    async Task HandleValidSubmit()
+    {
+        var response = await FilmService.CreateFilmAsync(film);
+        if (response.Success)
+            NavigationManager.NavigateTo("/films/filmsList");
+        else
+            message = response.Message;
+    }
+
+
+}

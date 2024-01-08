@@ -1,0 +1,22 @@
+﻿@page "/Settings"
+
+@inject AppSettings appSettings
+@inject IJSRuntime jsRuntime
+
+<h2 class="white-text"><b>Settings</b></h2>
+<hr class="white-horizontal-line" />
+
+<div style="display: flex; margin-bottom: 20px;">
+    <RadzenSwitch Style="margin-bottom: auto; margin-top:auto; margin-right: 20px" Change="ChangeTheme" />
+    <label class="white-text" style="margin-bottom: auto; margin-top:auto;"> Change theme </label>
+</div>
+
+@code {
+    private async Task ChangeTheme() {
+        var themeName = appSettings.Theme == "light" ? "dark" : "light";
+        appSettings.Theme = themeName;
+
+        var module = await jsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/site.js");
+        await module.InvokeVoidAsync("setTheme", themeName);
+    }
+}

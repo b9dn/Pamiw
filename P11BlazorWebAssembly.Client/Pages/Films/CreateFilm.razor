@@ -1,0 +1,31 @@
+﻿@page "/films/createfilm"
+
+@inject IFilmService FilmService
+@inject NavigationManager NavigationManager
+
+<h3>Create Film</h3>
+
+@if (message != null)
+{
+    <p><em>@message</em></p>
+}
+else
+{
+    <FilmForm film="film" OnValidSubmit="HandleValidSubmit"></FilmForm>
+}
+
+@code {
+    private Film film = new Film();
+    private string? message = null;
+
+    async Task HandleValidSubmit()
+    {
+        var response = await FilmService.CreateFilmAsync(film);
+        if (response.Success)
+            NavigationManager.NavigateTo("/films/filmsList");
+        else
+            message = response.Message;
+    }
+
+
+}

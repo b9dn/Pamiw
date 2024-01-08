@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P12MAUI.Client.MainPage"
+             xmlns:viewmodel="clr-namespace:P04WeatherForecastAPI.Client.ViewModels"
+            BackgroundColor="Red" >
+     
+
+
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Button   
+        Command="{Binding NewCommand}" 
+          Text="New Film" >
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="SteelBlue" />
+                
+                   
+                        <Setter Property="Padding" Value="10,5" />
+                        <Setter Property="FontSize" Value="14" />
+                        
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <CollectionView  ItemsSource="{Binding Films}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="Red" Padding="10" Margin="5">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:FilmsViewModel}}, Path=ShowDetailsCommand }"
+                                CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <!--Pierwszy wiersz-->
+                                <HorizontalStackLayout Grid.Row="0" >
+                                    <Label Text="{Binding Id}"  Margin="0,0,10,0"></Label>
+                                    <Label Text="{Binding Title}" FontSize="16"></Label>
+                                </HorizontalStackLayout>
+                                <!--Drugi wiersz-->
+                                <Label Grid.Row="1" Text="{Binding Description}"></Label>
+                                <!--Trzeci wiersz-->
+                                <HorizontalStackLayout Grid.Row="2" >
+
+
+
+
+                                    <Label Text="Barcode: "></Label>
+                                    <Label Text="{Binding Barcode}"></Label>
+
+
+                                    <Label Text="Price: " />
+                                    <Label Text="{Binding Price, StringFormat='C'}" />
+                                    <Label Text="Release Date: " />
+                                    <Label Text="{Binding ReleaseDate, StringFormat='{0: dd MM yyyy}'}" />
+
+
+
+
+                                </HorizontalStackLayout>
+                                <!--<Button Grid.Row="3" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:FilmsViewModel}}, Path=ShowDetailsCommand }" 
+                                CommandParameter="{Binding .}"  Text="Edit" >
+
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="SteelBlue" />
+
+
+                                            <Setter Property="Padding" Value="10,5" />
+                                            <Setter Property="FontSize" Value="14" />
+
+                                        </Style>
+                                    </Button.Style>
+                                </Button>-->
+                            </Grid>
+                        </Frame>
+                           
+                        
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

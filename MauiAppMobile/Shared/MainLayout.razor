@@ -1,0 +1,51 @@
+﻿@using Blazored.LocalStorage;
+@using System.Security.Claims;
+@inherits LayoutComponentBase
+
+@inject ILocalStorageService LocalStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
+
+                        <div style="margin-right: 10px; font-weight: bold;">
+                            @context.User.Identity.Name |
+                            @context.User.Claims.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault().Value
+                            <!-- @context.User.Claims.Where(c => c.Type == "DateCreated").FirstOrDefault().Value -->
+                        </div>
+                        <div>
+                            <button class="btn btn-danger" @onclick="Logout">Logout</button>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="/login">
+                            <button class="btn btn-primary">Login</button>
+                        </a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
+
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+
+@code {
+    private async Task Logout() {
+        await LocalStorageService.RemoveItemAsync("authToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}
