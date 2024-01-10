@@ -3,7 +3,8 @@
 @inject IFilmService FilmService
 @inject NavigationManager NavigationManager
 
-<h3>Edit Film</h3>
+<h2 class="white-text"><b>Film details</b></h2>
+<hr class="white-horizontal-line" />
 
 @if (film == null)
 {
@@ -12,9 +13,12 @@
 else
 {
     <FilmForm film="film" OnValidSubmit="HandleValidSubmit"></FilmForm>
-    <button class="btn btn-danger" @onclick=HandleDelete>Delete</button>
+    <div style="height: 5px"/>
+    <AuthorizeView Roles="Admin">
+        <button class="btn btn-danger" @onclick=HandleDelete>Delete</button>
+    </AuthorizeView>
+    <br/><br/>
 }
-
 
 
 @code {

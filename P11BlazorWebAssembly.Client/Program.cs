@@ -25,6 +25,7 @@ var uriBuilder = new UriBuilder(appSettingsSection.BaseAPIUrl)
 builder.Services.AddHttpClient<IFilmService, FilmService>(client => client.BaseAddress = uriBuilder.Uri);
 //builder.Services.Configure<AppSettings>(appSettings);
 //builder.Services.AddSingleton<IOptions<AppSettings>>(new OptionsWrapper<AppSettings>(appSettingsSection));
+builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddSingleton(appSettingsSection);
 builder.Services.AddBlazoredLocalStorage();
@@ -34,7 +35,6 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 //builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>(client => client.BaseAddress = uriBuilder.Uri);
-
 
 await builder.Build().RunAsync();
 

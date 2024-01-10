@@ -1,9 +1,11 @@
 ﻿@page "/films/createfilm"
 
+@attribute [Authorize(Roles = "Admin")]
 @inject IFilmService FilmService
 @inject NavigationManager NavigationManager
 
-<h3>Create Film</h3>
+<h2 class="white-text"><b>Create film</b></h2>
+<hr class="white-horizontal-line" />
 
 @if (message != null)
 {

@@ -8,19 +8,30 @@
 @inject ILocalStorageService LocalStorageService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
-<h3>Login</h3>
 
+<h2 class="white-text"><b>Login</b></h2>
+<hr class="white-horizontal-line" />
 
 <EditForm Model="userLoginDTO" OnValidSubmit="HandleLogin">
-
-    <p>Email:</p>
-    <InputText @bind-Value="userLoginDTO.Email" id="email"></InputText>
-    <p>Password:</p>
-    <InputText @bind-Value="userLoginDTO.Password" id="password"></InputText>
-
-    <button type="submit">Login In</button>
-
+    <div class="col-xl-6 col-md-8 col-12">
+        <InputText type="text" @bind-Value="userLoginDTO.Email" class="form-control dark-theme-textbox" placeholder="email address"></InputText>
+    </div>
+    <br />
+    <div class="col-xl-6 col-md-8 col-12">
+        <InputText type="password" @bind-Value="userLoginDTO.Password" class="form-control dark-theme-textbox" placeholder="password"></InputText>
+    </div>
+    <br>
+    <div class="col-xl-6 col-md-8 col-12 row">
+        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-3 col-3">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <div class="col-xl-5 col-lg-5 col-md-6 col-sm-9 col-9" style="display: flex; align-items: center;">
+            <a style="font-weight: bold;" href="/register">Create an account</a>
+        </div>
+    </div>
 </EditForm>
+
+
 
 @if (!string.IsNullOrEmpty(message))
 {

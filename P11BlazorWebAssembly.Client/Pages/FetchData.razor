@@ -1,11 +1,12 @@
 ﻿@page "/fetchdata"
-@inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
+@using P11BlazorWebAssembly.Client
+@inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h2 class="white-text"><b>Weather forecast</b></h2>
+<hr class="white-horizontal-line" />
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Check weather</p>
 
 @if (forecasts == null)
 {
@@ -37,22 +38,10 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(2000);
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
-
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
 }

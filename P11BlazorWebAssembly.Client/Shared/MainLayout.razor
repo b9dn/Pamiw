@@ -12,25 +12,27 @@
 
     <main>
         <div class="top-row px-4">
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
 
-            <AuthorizeView>
-                <Authorized>
+                        <div style="margin-right: 10px; font-weight: bold;">
+                            @context.User.Identity.Name |
+                            @context.User.Claims.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault().Value
+                            <!-- @context.User.Claims.Where(c => c.Type == "DateCreated").FirstOrDefault().Value -->
+                        </div>
+                        <div>
+                            <button class="btn btn-danger" @onclick="Logout">Logout</button>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="/login">
+                            <button class="btn btn-primary">Login</button>
+                        </a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
 
-                    <div>
-                        @context.User.Identity.Name | 
-                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault().Value
-                        @context.User.Claims.Where(c => c.Type == "DateCreated").FirstOrDefault().Value
-                    </div>
-
-                    <a href="#" @onclick="Logout">Logout</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a href="/register">Register</a>
-                </NotAuthorized>
-            </AuthorizeView>
-           
-
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
         <article class="content px-4">
@@ -40,11 +42,8 @@
 </div>
 
 
-@code{
-
-
-    private async Task Logout()
-    {
+@code {
+    private async Task Logout() {
         await LocalStorageService.RemoveItemAsync("authToken");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
         NavigationManager.NavigateTo("/login");

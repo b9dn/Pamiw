@@ -1,6 +1,4 @@
-﻿ 
-
-<EditForm Model="film" OnValidSubmit="OnValidSubmit">
+﻿<EditForm Model="film" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
 
     <div class="form-group">
@@ -19,11 +17,15 @@
         <label for="releaseDate">Release Date:</label>
         <InputDate id="releaseDate" @bind-Value="film.ReleaseDate" class="form-control"></InputDate>
     </div>
-    <div class="form-group">
+    <div class="form-group" style="text-align: right">
         <label for="description">Description:</label>
         <InputTextArea id="description" @bind-Value="film.Description" class="form-control"></InputTextArea>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+    <div style="height: 7px"/>
+    <div style="height: 7px" />
+    <AuthorizeView Roles="Admin" Context="FilmForm">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </AuthorizeView>
 </EditForm>
 
 
@@ -34,5 +36,4 @@
 
     [Parameter]
     public EventCallback OnValidSubmit { get; set; }
-
 }
