@@ -10,6 +10,3 @@ Po wejściu do aplikacji możemy przejść do strony logowania, utworzyć nowe k
 - Dostęp do Zasobów Sprzętowych: dostęp do mikrofonu
 - Warstwa Serwisów Dla Aplikacji Webowej i Mobilnej: aplikacje mobilna i webowa korzystają ze współdzielonych serwisów <br/>
 
-### Niezrealizowane podpunkty:
-- Ustawienia Użytkownika: wielojęzyczność
-- Implementacja opcji logowania i rejestracji poprzez Facebook, Google, Microsoft
