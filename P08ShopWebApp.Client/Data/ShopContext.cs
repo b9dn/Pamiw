@@ -18,9 +18,6 @@ public partial class ShopContext : DbContext
 
     public virtual DbSet<Film> Films { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("name=DefaultConnection");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Film>(entity =>

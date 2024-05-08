@@ -17,8 +17,8 @@ namespace P04WeatherForecastAPI.Client.Services.WeatherServices
         private const string autocomplete_endpoint = "locations/v1/cities/autocomplete?apikey={0}&q={1}&language{2}";
         private const string current_conditions_endpoint = "currentconditions/v1/{0}?apikey={1}&language{2}";
 
-        // private const string api_key = "5hFl75dja3ZuKSLpXFxUzSc9vXdtnwG5";
-        string api_key;
+        private const string api_key = "GnLggAsdZrHoSEOJxNX8rlthA7aLht2z";
+        //string api_key;
         //private const string language = "pl";
         string language;
 
@@ -30,7 +30,7 @@ namespace P04WeatherForecastAPI.Client.Services.WeatherServices
                 .AddJsonFile("appsettings.json");
 
             var configuration = builder.Build();
-            api_key = configuration["api_key"];
+            //api_key = configuration["api_key"];
             // language = configuration["default_language"];
             language = configuration["AppSettings:DefaultLanguage"];
          }

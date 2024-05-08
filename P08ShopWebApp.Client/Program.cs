@@ -8,7 +8,9 @@ builder.Services.AddRazorPages();
 
 
 builder.Services.AddDbContext<ShopContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")))
+);
 
 var app = builder.Build();
 
