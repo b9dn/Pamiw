@@ -6,7 +6,7 @@ This repository is a collection of various C# applications designed for multiple
 
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <img src="imgs/desktop.gif" alt="Desktop app" style="width: 45%; margin: 10px;">
+    <img src="imgs/desktop.gif" alt="Desktop app" style="width: 45%; height: 100px margin: 10px;">
     <img src="imgs/apiSwagger.jpg" alt="Api Swagger" style="width: 45%; height: 200px; margin: 10px;">
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
