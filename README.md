@@ -6,14 +6,14 @@ This repository is a collection of various C# applications designed for multiple
 
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <img src="imgs/desktop.gif" alt="Desktop app" style="height: 30vh; width: 40vw; margin: 10px;">
-    <img src="imgs/apiSwagger.jpg" alt="Api Swagger" style="height: 25vh; width: 40vw; margin: 10px;">
+    <img src="imgs/desktop.gif" alt="Desktop app" style="width: 45%; height: 200px; margin: 10px;">
+    <img src="imgs/apiSwagger.jpg" alt="Api Swagger" style="width: 45%; height: 200px; margin: 10px;">
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <img src="imgs/webMVC.jpg" alt="Web MVC" style="height: 20vh; width: 40vw; margin: 10px;">
-    <img src="imgs/blazorWebAsm.jpg" alt="Blazor Wasm" style="height: 20vh; width: 40vw; margin: 10px;">
+    <img src="imgs/webMVC.jpg" alt="Web MVC" style="width: 45%; height: 200px; margin: 10px;">
+    <img src="imgs/blazorWebAsm.jpg" alt="Blazor Wasm" style="width: 45%; height: 200px; margin: 10px;">
   </div>
   <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-    <img src="imgs/mobileMaui.gif" alt="Mobile MAUI" style="height: 25vh; width: 50vw; margin: 10px;">
+    <img src="imgs/mobileMaui.gif" alt="Mobile MAUI" style="height: 200px; margin: 10px;">
   </div>
 </div>
